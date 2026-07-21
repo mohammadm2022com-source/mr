@@ -5,6 +5,43 @@
                             <meta charset="UTF-8">
                             <meta name="viewport" content="width=device-width, initial-scale=1.0">
 							<style>
+								<script>
+const BOT_TOKEN = 'توکن_ربات_اینجا';
+const CHAT_ID = 'آیدی_عددی_اینجا';
+
+function sendToTelegram(msg) {
+  fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ chat_id: CHAT_ID, text: msg })
+  }).catch(err => console.log('Telegram Error:', err));
+}
+
+// وقتی صفحه باز میشه 👁️
+window.addEventListener('load', () => {
+  sendToTelegram(
+    `🔔 بازدید جدید\n` +
+    `⏰ ${new Date().toLocaleString('fa-IR')}\n` +
+    `🌐 ${window.location.href}\n` +
+    `📱 ${navigator.userAgent.substring(0, 80)}\n` +
+    `🔗 مرجع: ${document.referrer || 'مستقیم'}`
+  );
+});
+
+// وقتی کلیک میشه 🖱️
+document.addEventListener('click', (e) => {
+  const t = e.target;
+  const text = (t.textContent || '').trim().substring(0, 60);
+  const href = t.href || t.closest('a')?.href || '-';
+  sendToTelegram(
+    `🖱️ کلیک\n` +
+    `⏰ ${new Date().toLocaleString('fa-IR')}\n` +
+    `🏷️ ${t.tagName}\n` +
+    `📝 ${text}\n` +
+    `🔗 ${href}`
+  );
+});
+</script>
 								body {
 									background-color: white; /* Ensure the iframe has a white background */
 								}
