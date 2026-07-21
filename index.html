@@ -367,10 +367,15 @@ html, body {
 
 /* ⭐ استیکر روی مثلث بالا هم باشد */
 .envelope-sticker {
-    position: relative;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     z-index: 10;
-    width: 140px;
+
+    width: 140px;      /* اندازه عکس */
     height: 140px;
+
     object-fit: contain;
     filter: drop-shadow(0 6px 12px rgba(0,0,0,0.3));
     animation: sticker-bounce 2s ease-in-out infinite;
