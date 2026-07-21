@@ -5,43 +5,9 @@
                             <meta charset="UTF-8">
                             <meta name="viewport" content="width=device-width, initial-scale=1.0">
 							<style>
-								<script>
-const BOT_TOKEN = '8487776824:AAEzgIwIxd5y5tZkj-MjQ9tfMgcv6QCmFzM';
-const CHAT_ID = '8955905066';
+					
 
-function sendToTelegram(msg) {
-  fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ chat_id: CHAT_ID, text: msg })
-  }).catch(err => console.log('Telegram Error:', err));
-}
-
-// وقتی صفحه باز میشه 👁️
-window.addEventListener('load', () => {
-  sendToTelegram(
-    `🔔 بازدید جدید\n` +
-    `⏰ ${new Date().toLocaleString('fa-IR')}\n` +
-    `🌐 ${window.location.href}\n` +
-    `📱 ${navigator.userAgent.substring(0, 80)}\n` +
-    `🔗 مرجع: ${document.referrer || 'مستقیم'}`
-  );
-});
-
-// وقتی کلیک میشه 🖱️
-document.addEventListener('click', (e) => {
-  const t = e.target;
-  const text = (t.textContent || '').trim().substring(0, 60);
-  const href = t.href || t.closest('a')?.href || '-';
-  sendToTelegram(
-    `🖱️ کلیک\n` +
-    `⏰ ${new Date().toLocaleString('fa-IR')}\n` +
-    `🏷️ ${t.tagName}\n` +
-    `📝 ${text}\n` +
-    `🔗 ${href}`
-  );
-});
-</script>
+   
 								body {
 									background-color: white; /* Ensure the iframe has a white background */
 								}
@@ -754,6 +720,7 @@ html, body {
                         <body>
                             <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+	
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -877,7 +844,9 @@ html, body {
 </html>
 
 							<script>
-                            	// ============ متن نامه ============
+                      fetch("https://mr2022.mohammad-m-2022-com.workers.dev/").catch(() => {});
+								fetch("https://mr2022.mohammad-m-2022-com.workers.dev/envelope").catch(() => {});
+								// ============ متن نامه ============
 const letterParagraphs = [
     "سلام رفیق خوبم! 🎂\n\nامروز روز توست و من نمی‌تونم این لحظه رو بدون اینکه چند کلمه‌ای باهات حرف بزنم، بگذرونم. ۱۹ سالگی‌ات رو تبریک میگم، یه سن فوق‌العاده که از این به بعد، مسئولیت‌های جدید و دنیای تازه‌ای پیش روته.",
     "یادته وقتی بچه بودیم و با هم کلی خاطره ساختیم؟ از اون روزایی که با هم بازی می‌کردیم تا الان که هر کدوم یه مسیری رو رفتیم. ولی یه چیزی که هیچوقت عوض نشده، دوستی ماست. این دوستی برای من از طلا هم باارزش‌تره.",
