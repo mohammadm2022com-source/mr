@@ -1,0 +1,1248 @@
+
+                        <!DOCTYPE html>
+                        <html lang="en">
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+							<style>
+								body {
+									background-color: white; /* Ensure the iframe has a white background */
+								}
+
+								/* ============ ریست و متغیرها ============ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+    --gold: #d4af37;
+    --gold-light: #f4d03f;
+    --emerald: #0d6e4f;
+    --rose: #c2185b;
+    --cream: #faf3e0;
+    --paper: #faf3e0;
+    --paper-dark: #e0c896;
+    --night: #0a0a1f;
+    --night-2: #1a1a3e;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Vazirmatn', Tahoma, sans-serif;
+    background: var(--night);
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* ============ پس‌زمینه ============ */
+.bg-main {
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(ellipse at top right, rgba(13, 110, 79, 0.3) 0%, transparent 50%),
+        radial-gradient(ellipse at bottom left, rgba(194, 24, 91, 0.2) 0%, transparent 50%),
+        linear-gradient(180deg, #0a0a1f 0%, #1a1a3e 100%);
+    z-index: 0;
+}
+
+.night-sky {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle var(--duration, 3s) ease-in-out infinite;
+    animation-delay: var(--delay, 0s);
+    box-shadow: 0 0 4px white;
+}
+
+.star.gold {
+    background: var(--gold-light);
+    box-shadow: 0 0 6px var(--gold-light);
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.2; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.3); }
+}
+
+#particlesCanvas {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* ============ کیک تولد ============ */
+.cake-stage {
+    position: fixed;
+    top: 8%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    pointer-events: none;
+    animation: cake-entrance 1.5s ease-out;
+}
+
+@keyframes cake-entrance {
+    0% { transform: translateX(-50%) translateY(-100px); opacity: 0; }
+    100% { transform: translateX(-50%) translateY(0); opacity: 1; }
+}
+
+.cake {
+    position: relative;
+    width: 280px;
+    height: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    filter: drop-shadow(0 15px 40px rgba(0,0,0,0.5));
+}
+
+.cake-tier {
+    position: relative;
+    border-radius: 12px;
+    box-shadow:
+        inset 0 -8px 20px rgba(0,0,0,0.3),
+        inset 0 3px 8px rgba(255,255,255,0.3),
+        0 5px 15px rgba(0,0,0,0.3);
+    margin-bottom: -8px;
+    background: linear-gradient(180deg, #fff5e6 0%, #f5e6d3 50%, #d4b896 100%);
+}
+
+.cake-top {
+    width: 100px;
+    height: 60px;
+    background: linear-gradient(180deg, #ffb6c1 0%, #ff8da1 50%, #c2185b 100%);
+    z-index: 3;
+}
+
+.cake-top .tier-top {
+    position: absolute;
+    top: -8px;
+    left: -5px;
+    right: -5px;
+    height: 16px;
+    background:
+        radial-gradient(circle at 20% 100%, #fff 0%, #fff 15%, transparent 16%),
+        radial-gradient(circle at 50% 100%, #fff 0%, #fff 15%, transparent 16%),
+        radial-gradient(circle at 80% 100%, #fff 0%, #fff 15%, transparent 16%),
+        linear-gradient(180deg, #fff 0%, #f5e6d3 100%);
+    border-radius: 50% 50% 5px 5px;
+}
+
+.cake-middle {
+    width: 180px;
+    height: 80px;
+    background: linear-gradient(180deg, #f5deb3 0%, #deb887 50%, #a0825d 100%);
+    z-index: 2;
+}
+
+.cake-bottom {
+    width: 260px;
+    height: 100px;
+    background: linear-gradient(180deg, #fff5e6 0%, #e8d4a8 50%, #b8956a 100%);
+    z-index: 1;
+}
+
+.tier-decoration {
+    position: absolute;
+    inset: 0;
+    background-image:
+        repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(212, 175, 55, 0.2) 10px, rgba(212, 175, 55, 0.2) 12px);
+    border-radius: inherit;
+}
+
+.drip {
+    position: absolute;
+    top: 0;
+    width: 12px;
+    height: 25px;
+    background: linear-gradient(180deg, #fff 0%, #f5e6d3 100%);
+    border-radius: 0 0 50% 50%;
+    box-shadow: inset 0 -2px 4px rgba(0,0,0,0.1);
+}
+
+.drip-1 { left: 20%; }
+.drip-2 { left: 50%; transform: translateX(-50%); height: 30px; }
+.drip-3 { right: 20%; }
+.drip-4 { left: 15%; }
+.drip-5 { right: 15%; }
+
+.candles-row {
+    position: absolute;
+    top: -22px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    padding: 0 5px;
+}
+
+.candle {
+    position: relative;
+    width: 4px;
+    height: 18px;
+    background: linear-gradient(90deg, #ffb6c1 0%, #ff69b4 50%, #c2185b 100%);
+    border-radius: 2px 2px 1px 1px;
+    box-shadow: inset -1px 0 2px rgba(0,0,0,0.2);
+}
+
+.candle::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 4px;
+    background: #2c1810;
+}
+
+.candle-flame {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 7px;
+    height: 14px;
+    background: radial-gradient(ellipse at center bottom, #fff8dc 0%, #ffeb3b 30%, #ff9800 60%, #ff5722 90%, transparent 100%);
+    border-radius: 50% 50% 30% 30% / 60% 60% 40% 40%;
+    animation: flame-flicker 0.4s ease-in-out infinite alternate;
+    filter: blur(0.3px);
+}
+
+@keyframes flame-flicker {
+    0% { transform: translateX(-50%) scale(1, 1) rotate(-3deg); }
+    100% { transform: translateX(-50%) scale(1.1, 1.15) rotate(3deg); }
+}
+
+.cake-plate {
+    position: absolute;
+    bottom: -10px;
+    left: -20px;
+    right: -20px;
+    height: 18px;
+    background: linear-gradient(180deg, #e0e0e0 0%, #b0b0b0 100%);
+    border-radius: 50%;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.cake-plate::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: 5%;
+    right: 5%;
+    height: 6px;
+    background: linear-gradient(180deg, #fff 0%, #e0e0e0 100%);
+    border-radius: 50%;
+}
+
+.age-number {
+    position: absolute;
+    bottom: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Parastoo', serif;
+    font-size: 56px;
+    font-weight: bold;
+    background: linear-gradient(180deg, var(--gold-light) 0%, var(--gold) 50%, #8b6914 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.6));
+    animation: number-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes number-glow {
+    0% { transform: translateX(-50%) scale(1); }
+    100% { transform: translateX(-50%) scale(1.05); }
+}
+
+/* ============ پاکت نامه ============ */
+.envelope-stage {
+    position: fixed;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(85vw, 320px);
+    height: 220px;
+    z-index: 50;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.envelope-stage.fade-out {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.6);
+    pointer-events: none;
+}
+
+.envelope-shadow {
+    position: absolute;
+    bottom: -15px;
+    left: 8%;
+    width: 84%;
+    height: 25px;
+    background: radial-gradient(ellipse, rgba(0,0,0,0.6), transparent 70%);
+    filter: blur(8px);
+}
+
+.envelope-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    perspective: 1200px;
+    cursor: pointer;
+}
+
+.envelope {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.envelope-body {
+    position: absolute;
+    inset: 0;
+    background: #c9a876;
+    border-radius: 6px;
+    box-shadow:
+        0 15px 40px rgba(0,0,0,0.4),
+        inset 0 -8px 15px rgba(0,0,0,0.15),
+        inset 0 2px 4px rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* ⭐ استیکر روی مثلث بالا هم باشد */
+.envelope-sticker {
+    position: relative;
+    z-index: 10;
+    width: 140px;
+    height: 140px;
+    object-fit: contain;
+    filter: drop-shadow(0 6px 12px rgba(0,0,0,0.3));
+    animation: sticker-bounce 2s ease-in-out infinite;
+}
+
+.envelope-sticker-fallback {
+    position: relative;
+    z-index: 10;
+    font-size: 110px;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3));
+    animation: sticker-bounce 2s ease-in-out infinite;
+}
+
+@keyframes sticker-bounce {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-6px) scale(1.03); }
+}
+
+.envelope.opened .envelope-sticker,
+.envelope.opened .envelope-sticker-fallback {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.envelope-flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    transform-origin: top center;
+    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 5;
+    cursor: pointer;
+    background: #c9a876;
+    clip-path: polygon(0 0, 50% 100%, 100% 0);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    pointer-events: none;
+}
+
+.envelope.opened .envelope-flap {
+    transform: rotateX(180deg);
+}
+
+.envelope-tap-hint {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #5d4037;
+    font-size: 12px;
+    font-family: 'Parastoo', serif;
+    animation: hint-pulse 2s ease-in-out infinite;
+    z-index: 1;
+}
+
+@keyframes hint-pulse {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+}
+
+/* ============ نامه ============ */
+.letter-stage {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 20;
+    padding: 20px;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.letter-stage.hidden { display: none; }
+
+.letter-stage.entering {
+    animation: letter-zoom-in 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.letter-stage.exiting {
+    animation: letter-zoom-out 0.8s ease forwards;
+}
+
+@keyframes letter-zoom-in {
+    0% { transform: scale(0.3); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes letter-zoom-out {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(0.3); opacity: 0; }
+}
+
+.letter {
+    width: 100%;
+    max-width: 480px;
+    max-height: 85vh;
+    background:
+        radial-gradient(ellipse at center, transparent 60%, rgba(139, 69, 19, 0.15) 100%),
+        linear-gradient(135deg, #faf3e0 0%, #f0e0bc 50%, #e0c896 100%);
+    border-radius: 10px;
+    position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-shadow:
+        0 30px 80px rgba(0,0,0,0.6),
+        0 0 0 1px rgba(212, 175, 55, 0.4),
+        inset 0 0 60px rgba(139, 115, 85, 0.15);
+    padding: 28px 22px;
+}
+
+.letter::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        repeating-linear-gradient(0deg, transparent, transparent 28px, rgba(139, 115, 85, 0.08) 28px, rgba(139, 115, 85, 0.08) 29px),
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.3'/%3E%3C/svg%3E");
+    pointer-events: none;
+    opacity: 0.6;
+    mix-blend-mode: multiply;
+    border-radius: 10px;
+}
+
+.letter-frame {
+    position: relative;
+    z-index: 1;
+}
+
+.letter-content {
+    position: relative;
+    z-index: 2;
+    padding: 5px;
+}
+
+.letter-header {
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 10px 0;
+}
+
+.letter-sticker {
+    width: 180px;
+    height: 180px;
+    object-fit: contain;
+    margin-bottom: 12px;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.2));
+    animation: sticker-bounce 2s ease-in-out infinite;
+}
+
+.letter-sticker-fallback {
+    font-size: 100px;
+    margin-bottom: 12px;
+    display: block;
+    animation: sticker-bounce 2s ease-in-out infinite;
+}
+
+.letter-greeting {
+    font-family: 'Parastoo', serif;
+    font-size: 22px;
+    color: var(--emerald);
+    font-weight: 700;
+    padding: 10px;
+    background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.15), transparent);
+    border-radius: 8px;
+    display: inline-block;
+}
+
+.letter-body {
+    font-size: 16px;
+    line-height: 1.95;
+    color: #3e2723;
+    text-align: justify;
+    font-family: 'Parastoo', serif;
+    min-height: 150px;
+}
+
+.letter-body p {
+    margin-bottom: 14px;
+    text-indent: 22px;
+}
+
+.cursor-blink {
+    display: inline-block;
+    width: 2px;
+    height: 18px;
+    background: var(--emerald);
+    margin-right: 2px;
+    animation: blink 0.8s infinite;
+    vertical-align: middle;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+.letter-signature {
+    margin-top: 25px;
+    text-align: left;
+    color: var(--emerald);
+    font-family: 'Parastoo', serif;
+    padding: 12px 15px;
+    background: linear-gradient(90deg, transparent, rgba(13, 110, 79, 0.08));
+    border-right: 3px solid var(--gold);
+    border-radius: 4px;
+}
+
+.signature-line {
+    font-size: 15px;
+    font-style: italic;
+    margin-bottom: 6px;
+}
+
+.signature-name {
+    font-size: 14px;
+    color: #5d4037;
+}
+
+.letter-footer {
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px dashed rgba(212, 175, 55, 0.5);
+    font-family: 'Parastoo', serif;
+    color: var(--emerald);
+    font-size: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+/* ============ راهنما ============ */
+.hint {
+    position: fixed;
+    top: 78%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--gold-light);
+    font-size: 13px;
+    z-index: 30;
+    pointer-events: none;
+    transition: opacity 0.5s;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    animation: hint-bounce 2s ease-in-out infinite;
+    background: rgba(10, 10, 31, 0.6);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1px solid rgba(212, 175, 55, 0.4);
+}
+
+.hint.hidden { opacity: 0; }
+
+@keyframes hint-bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-6px); }
+}
+
+/* ============ کنترل‌ها ============ */
+.controls {
+    position: fixed;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 100;
+}
+
+.ctrl-btn {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: 2px solid var(--gold);
+    background: rgba(10, 10, 31, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+}
+
+.ctrl-btn:active { transform: scale(0.92); }
+.ctrl-btn.hidden { display: none; }
+
+.ctrl-btn.active {
+    background: rgba(212, 175, 55, 0.4);
+    border-color: #fff;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+}
+
+/* ============ نوار پیشرفت ============ */
+.progress-bar {
+    position: fixed;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    z-index: 100;
+    transition: opacity 0.3s;
+}
+
+.progress-bar.hidden { opacity: 0; pointer-events: none; }
+
+.progress-fill {
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--rose), var(--gold));
+    width: 0%;
+    transition: width 0.3s ease;
+    border-radius: 2px;
+    box-shadow: 0 0 8px var(--gold);
+}
+
+.progress-text {
+    text-align: center;
+    color: var(--gold-light);
+    font-size: 11px;
+    margin-top: 4px;
+    font-family: 'Parastoo', serif;
+}
+
+/* ============ رسپانسیو ============ */
+@media (max-width: 480px) {
+    .cake-stage { top: 5%; }
+    .cake { transform: scale(0.65); }
+    .age-number { font-size: 42px; bottom: -50px; }
+
+    .envelope-stage {
+        top: 58%;
+        width: 82vw;
+        height: 190px;
+    }
+    .envelope-sticker { width: 110px; height: 110px; }
+
+    .letter { padding: 20px 16px; max-height: 78vh; }
+    .letter-sticker { width: 140px; height: 140px; }
+    .letter-greeting { font-size: 17px; padding: 8px; }
+    .letter-body { font-size: 14px; line-height: 1.85; }
+    .letter-body p { text-indent: 18px; margin-bottom: 12px; }
+
+    .hint {
+        top: 84%;
+        font-size: 12px;
+        padding: 6px 14px;
+    }
+
+    .controls { bottom: 12px; }
+    .ctrl-btn { width: 42px; height: 42px; font-size: 16px; }
+}
+
+@media (max-height: 700px) {
+    .cake-stage { top: 3%; }
+    .cake { transform: scale(0.5); }
+    .envelope-stage { top: 60%; height: 180px; }
+    .hint { top: 86%; }
+}
+
+@media (max-height: 600px) {
+    .cake-stage { display: none; }
+    .envelope-stage { top: 50%; }
+    .hint { top: 82%; }
+}
+
+.letter::-webkit-scrollbar { width: 5px; }
+.letter::-webkit-scrollbar-track { background: transparent; }
+.letter::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+							</style>
+                        </head>
+                        <body>
+                            <!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0a0a1f">
+    <title>🎂 تولدت مبارک</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700&family=Parastoo:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- پس‌زمینه -->
+    <div class="bg-main"></div>
+    <div class="night-sky" id="nightSky"></div>
+    <canvas id="particlesCanvas"></canvas>
+
+    <!-- کیک تولد -->
+    <div class="cake-stage" id="cakeStage">
+        <div class="cake">
+            <div class="cake-tier cake-top">
+                <div class="tier-decoration"></div>
+                <div class="candles-row" id="candlesTop"></div>
+                <div class="tier-top"></div>
+            </div>
+            <div class="cake-tier cake-middle">
+                <div class="tier-decoration"></div>
+                <div class="candles-row" id="candlesMiddle"></div>
+                <div class="drip drip-1"></div>
+                <div class="drip drip-2"></div>
+                <div class="drip drip-3"></div>
+            </div>
+            <div class="cake-tier cake-bottom">
+                <div class="tier-decoration"></div>
+                <div class="candles-row" id="candlesBottom"></div>
+                <div class="drip drip-4"></div>
+                <div class="drip drip-5"></div>
+            </div>
+            <div class="cake-plate"></div>
+            <div class="age-number">
+                <span>۱</span><span>۹</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- پاکت نامه -->
+    <div class="envelope-stage" id="envelopeStage">
+        <div class="envelope-shadow"></div>
+        <div class="envelope-wrapper" id="envelopeWrapper">
+            <div class="envelope" id="envelope">
+                <div class="envelope-body">
+                    <img id="envelopeSticker"
+                         src="images/sticker.png"
+                         alt="تولدت مبارک"
+                         class="envelope-sticker">
+                    <div class="envelope-sticker-fallback">🎂</div>
+                    <div class="envelope-tap-hint">👆 بزن اینجا</div>
+                </div>
+                <div class="envelope-flap" id="envelopeFlap"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نامه -->
+    <div class="letter-stage hidden" id="letterStage">
+        <div class="letter" id="letter">
+            <div class="letter-frame">
+                <div class="letter-content">
+                    <div class="letter-header">
+                        <img id="letterSticker"
+                             src="images/sticker.png"
+                             alt="تولدت مبارک"
+                             class="letter-sticker">
+                        <div class="letter-sticker-fallback">🎂</div>
+                        <div class="letter-greeting">سلام رفیق خوبم!</div>
+                    </div>
+                    <div class="letter-body" id="letterBody"></div>
+                    <div class="letter-signature">
+                        <div class="signature-line">با تمام دوستی‌ام،</div>
+                        <div class="signature-name">دوست همیشگی‌ات ♥</div>
+                    </div>
+                    <div class="letter-footer">
+                        <span>🎉</span>
+                        <span>تولدت مبارک</span>
+                        <span>🎉</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- راهنما -->
+    <div class="hint" id="hint">
+        <span>👆</span>
+        <span>روی پاکت بزن تا نامه باز بشه</span>
+    </div>
+
+    <!-- نوار پیشرفت -->
+    <div class="progress-bar hidden" id="progressBar">
+        <div class="progress-fill" id="progressFill"></div>
+        <div class="progress-text">در حال نوشتن نامه...</div>
+    </div>
+
+    <!-- کنترل‌ها -->
+    <div class="controls">
+        <button class="ctrl-btn hidden" id="closeBtn" type="button">✕</button>
+        <button class="ctrl-btn active" id="musicBtn" type="button">
+            <span id="musicIcon">🎵</span>
+        </button>
+        <button class="ctrl-btn active" id="soundBtn" type="button">
+            <span id="soundIcon">🔊</span>
+        </button>
+    </div>
+
+    <!-- صدای زمینه -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+							<script>
+                            	// ============ متن نامه ============
+const letterParagraphs = [
+    "سلام رفیق خوبم! 🎂\n\nامروز روز توست و من نمی‌تونم این لحظه رو بدون اینکه چند کلمه‌ای باهات حرف بزنم، بگذرونم. ۱۹ سالگی‌ات رو تبریک میگم، یه سن فوق‌العاده که از این به بعد، مسئولیت‌های جدید و دنیای تازه‌ای پیش روته.",
+    "یادته وقتی بچه بودیم و با هم کلی خاطره ساختیم؟ از اون روزایی که با هم بازی می‌کردیم تا الان که هر کدوم یه مسیری رو رفتیم. ولی یه چیزی که هیچوقت عوض نشده، دوستی ماست. این دوستی برای من از طلا هم باارزش‌تره.",
+    "از خداوند متعال برات آرزوی بهترین‌ها رو دارم. آرزو می‌کنم سال جدید زندگیت پر از سلامتی، شادی، موفقیت و خیر و برکت باشه. هرجا که هستی، یادت باشه که همیشه یه دوست داری که به فکرته و برات دعا می‌کنه.",
+    "۱۹ تا شمع روی کیکت فوت کن و آرزو کن. من مطمئنم که آرزوهات، با کمک خداوند، یکی یکی برآورده میشن. تو آدم خوبی هستی و لایق بهترین‌هایی.",
+    "از طرف تمام لحظات خوبی که با هم گذروندیم، از طرف تمام خنده‌ها و شادی‌ها، تولدت رو صد بار تبریک میگم. تو بهترین دوستی هستی که می‌تونستم داشته باشم.",
+    "امیدوارم این نامه کوچیک، لبخند روی لبت بیاره. تولدت مبارک رفیق! 🎉\n\nدوست دارم تا همیشه."
+];
+
+// ============ المنت‌ها ============
+const envelopeStage = document.getElementById('envelopeStage');
+const envelope = document.getElementById('envelope');
+const envelopeWrapper = document.getElementById('envelopeWrapper');
+const envelopeFlap = document.getElementById('envelopeFlap');
+const letterStage = document.getElementById('letterStage');
+const letter = document.getElementById('letter');
+const letterBody = document.getElementById('letterBody');
+const hint = document.getElementById('hint');
+const closeBtn = document.getElementById('closeBtn');
+const musicBtn = document.getElementById('musicBtn');
+const soundBtn = document.getElementById('soundBtn');
+const musicIcon = document.getElementById('musicIcon');
+const soundIcon = document.getElementById('soundIcon');
+const bgMusic = document.getElementById('bgMusic');
+const progressBar = document.getElementById('progressBar');
+const progressFill = document.getElementById('progressFill');
+const nightSky = document.getElementById('nightSky');
+const particlesCanvas = document.getElementById('particlesCanvas');
+const particlesCtx = particlesCanvas.getContext('2d');
+
+// ============ حالت ============
+let state = {
+    isOpened: false,
+    isTyping: false,
+    musicOn: false,
+    soundOn: true,
+    typingTimeout: null,
+    particles: [],
+    audioContext: null
+};
+
+// ============ شمع‌ها ============
+function createCandles() {
+    const topCandles = document.getElementById('candlesTop');
+    const middleCandles = document.getElementById('candlesMiddle');
+    const bottomCandles = document.getElementById('candlesBottom');
+    const colors = ['#ffb6c1', '#ff69b4', '#ffd700', '#87ceeb', '#98fb98', '#dda0dd', '#ffa500'];
+    
+    for (let i = 0; i < 1; i++) topCandles.appendChild(createCandle(colors[i % colors.length]));
+    for (let i = 0; i < 6; i++) middleCandles.appendChild(createCandle(colors[(i + 1) % colors.length]));
+    for (let i = 0; i < 12; i++) bottomCandles.appendChild(createCandle(colors[(i + 2) % colors.length]));
+}
+
+function createCandle(color) {
+    const candle = document.createElement('div');
+    candle.className = 'candle';
+    candle.style.background = `linear-gradient(90deg, ${color} 0%, ${darken(color, 20)} 100%)`;
+    
+    const flame = document.createElement('div');
+    flame.className = 'candle-flame';
+    flame.style.animationDelay = (Math.random() * 0.5) + 's';
+    
+    candle.appendChild(flame);
+    return candle;
+}
+
+function darken(hex, percent) {
+    const num = parseInt(hex.replace('#', ''), 16);
+    const amt = Math.round(2.55 * percent);
+    const R = Math.max(0, (num >> 16) - amt);
+    const G = Math.max(0, (num >> 8 & 0x00FF) - amt);
+    const B = Math.max(0, (num & 0x0000FF) - amt);
+    return '#' + (0x1000000 + (R << 16) + (G << 8) + B).toString(16).slice(1);
+}
+
+// ============ ستاره‌ها ============
+function createStars() {
+    const count = window.innerWidth < 480 ? 80 : 140;
+    for (let i = 0; i < count; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        if (Math.random() > 0.85) star.classList.add('gold');
+        const size = Math.random() * 2.5 + 0.5;
+        star.style.width = size + 'px';
+        star.style.height = size + 'px';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+        star.style.setProperty('--delay', Math.random() * 5 + 's');
+        nightSky.appendChild(star);
+    }
+}
+
+// ============ ذرات ============
+function initParticles() {
+    particlesCanvas.width = window.innerWidth;
+    particlesCanvas.height = window.innerHeight;
+    
+    const count = window.innerWidth < 480 ? 30 : 55;
+    for (let i = 0; i < count; i++) {
+        state.particles.push({
+            x: Math.random() * particlesCanvas.width,
+            y: Math.random() * particlesCanvas.height,
+            vx: (Math.random() - 0.5) * 0.3,
+            vy: -Math.random() * 0.4 - 0.1,
+            size: Math.random() * 2.5 + 1,
+            opacity: Math.random() * 0.6 + 0.3,
+            pulse: Math.random() * Math.PI * 2
+        });
+    }
+}
+
+function drawParticles() {
+    particlesCtx.clearRect(0, 0, particlesCanvas.width, particlesCanvas.height);
+    
+    state.particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.pulse += 0.025;
+        
+        if (p.y < -10) p.y = particlesCanvas.height + 10;
+        if (p.x < -10) p.x = particlesCanvas.width + 10;
+        if (p.x > particlesCanvas.width + 10) p.x = -10;
+        
+        const currentOpacity = p.opacity * (0.5 + 0.5 * Math.sin(p.pulse));
+        
+        const gradient = particlesCtx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 4);
+        gradient.addColorStop(0, `rgba(255, 215, 100, ${currentOpacity})`);
+        gradient.addColorStop(0.5, `rgba(255, 180, 100, ${currentOpacity * 0.5})`);
+        gradient.addColorStop(1, 'rgba(255, 180, 100, 0)');
+        
+        particlesCtx.fillStyle = gradient;
+        particlesCtx.beginPath();
+        particlesCtx.arc(p.x, p.y, p.size * 4, 0, Math.PI * 2);
+        particlesCtx.fill();
+    });
+    
+    requestAnimationFrame(drawParticles);
+}
+
+// ============ صدا ============
+function initAudio() {
+    if (!state.audioContext) {
+        state.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
+}
+
+function playSound(type) {
+    if (!state.soundOn) return;
+    initAudio();
+    
+    const ctx = state.audioContext;
+    const now = ctx.currentTime;
+    
+    if (type === 'open') {
+        const noise = ctx.createBufferSource();
+        const buffer = ctx.createBuffer(1, ctx.sampleRate * 0.8, ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < data.length; i++) {
+            data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.2));
+        }
+        noise.buffer = buffer;
+        
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.value = 2500;
+        filter.Q.value = 1.5;
+        
+        const gain = ctx.createGain();
+        gain.gain.setValueAtTime(0.4, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.8);
+        
+        noise.connect(filter);
+        filter.connect(gain);
+        gain.connect(ctx.destination);
+        noise.start(now);
+    } else if (type === 'type') {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.frequency.value = 250 + Math.random() * 150;
+        osc.type = 'triangle';
+        gain.gain.setValueAtTime(0.025, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.04);
+    } else if (type === 'magic') {
+        const freqs = [523, 659, 784, 1047];
+        freqs.forEach((freq, i) => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.frequency.value = freq;
+            osc.type = 'sine';
+            const start = now + i * 0.1;
+            gain.gain.setValueAtTime(0, start);
+            gain.gain.linearRampToValueAtTime(0.1, start + 0.05);
+            gain.gain.exponentialRampToValueAtTime(0.001, start + 0.4);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(start);
+            osc.stop(start + 0.4);
+        });
+    } else if (type === 'click') {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.frequency.value = 800;
+        gain.gain.setValueAtTime(0.08, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.1);
+    }
+}
+
+// ============ تایپ نامه ============
+async function typeParagraph(text, paragraphIndex, totalParagraphs) {
+    return new Promise((resolve) => {
+        const lines = text.split('\n');
+        const p = document.createElement('p');
+        letterBody.appendChild(p);
+        
+        let lineIndex = 0;
+        let charIndex = 0;
+        let currentLine = lines[0];
+        let fullText = '';
+        
+        const totalChars = letterParagraphs.reduce((sum, t) => sum + t.length, 0);
+        let charsSoFar = letterParagraphs.slice(0, paragraphIndex).reduce((sum, t) => sum + t.length, 0);
+        
+        function typeChar() {
+            if (!state.isTyping) {
+                p.innerHTML = text.replace(/\n/g, '<br>');
+                resolve();
+                return;
+            }
+            
+            if (charIndex < currentLine.length) {
+                const char = currentLine[charIndex];
+                fullText += char;
+                p.innerHTML = fullText + '<span class="cursor-blink"></span>';
+                charIndex++;
+                
+                const progress = ((charsSoFar + fullText.length) / totalChars) * 100;
+                progressFill.style.width = progress + '%';
+                
+                if (charIndex % 4 === 0) playSound('type');
+                letter.scrollTop = letter.scrollHeight;
+                
+                let speed = 45;
+                if (char === ' ') speed = 25;
+                else if (char === '،' || char === '؟' || char === '.') speed = 150;
+                
+                state.typingTimeout = setTimeout(typeChar, speed);
+            } else if (lineIndex < lines.length - 1) {
+                lineIndex++;
+                charIndex = 0;
+                currentLine = lines[lineIndex];
+                fullText += '\n';
+                p.innerHTML = fullText.replace(/\n/g, '<br>') + '<span class="cursor-blink"></span>';
+                state.typingTimeout = setTimeout(typeChar, 300);
+            } else {
+                p.innerHTML = fullText.replace(/\n/g, '<br>');
+                resolve();
+            }
+        }
+        
+        setTimeout(typeChar, 200);
+    });
+}
+
+async function startTyping() {
+    state.isTyping = true;
+    progressBar.classList.remove('hidden');
+    progressFill.style.width = '0%';
+    
+    for (let i = 0; i < letterParagraphs.length; i++) {
+        if (!state.isTyping) break;
+        await typeParagraph(letterParagraphs[i], i, letterParagraphs.length);
+        if (i < letterParagraphs.length - 1) {
+            await new Promise(r => setTimeout(r, 500));
+        }
+    }
+    
+    state.isTyping = false;
+    setTimeout(() => progressBar.classList.add('hidden'), 1500);
+}
+
+function resetLetter() {
+    if (state.typingTimeout) clearTimeout(state.typingTimeout);
+    state.isTyping = false;
+    letterBody.innerHTML = '';
+    progressFill.style.width = '0%';
+    progressBar.classList.add('hidden');
+}
+
+// ============ باز و بسته کردن پاکت ============
+function openEnvelope() {
+    if (state.isOpened) return;
+    state.isOpened = true;
+    
+    initAudio();
+    playSound('open');
+    hint.classList.add('hidden');
+    envelope.classList.add('opened');
+    
+    setTimeout(() => {
+        playSound('magic');
+        envelopeStage.classList.add('fade-out');
+        
+        setTimeout(() => {
+            envelopeStage.style.display = 'none';
+            letterStage.classList.remove('hidden');
+            letterStage.classList.add('entering');
+            
+            setTimeout(() => {
+                letterStage.classList.remove('entering');
+                startTyping();
+            }, 1200);
+        }, 700);
+    }, 1400);
+    
+    closeBtn.classList.remove('hidden');
+}
+
+function closeEnvelope() {
+    if (!state.isOpened) return;
+    resetLetter();
+    playSound('click');
+    
+    letterStage.classList.add('exiting');
+    closeBtn.classList.add('hidden');
+    
+    setTimeout(() => {
+        letterStage.classList.add('hidden');
+        letterStage.classList.remove('exiting');
+        envelopeStage.style.display = 'block';
+        
+        setTimeout(() => {
+            envelopeStage.classList.remove('fade-out');
+            envelope.classList.remove('opened');
+            state.isOpened = false;
+            setTimeout(() => hint.classList.remove('hidden'), 800);
+        }, 100);
+    }, 800);
+}
+
+// ============ کنترل صدا/موزیک ============
+function toggleMusic() {
+    state.musicOn = !state.musicOn;
+    if (state.musicOn) {
+        bgMusic.volume = 0.35;
+        bgMusic.play().catch(() => {
+            state.musicOn = false;
+            musicIcon.textContent = '🎵';
+            musicBtn.classList.remove('active');
+        });
+        musicIcon.textContent = '🎶';
+        musicBtn.classList.add('active');
+    } else {
+        bgMusic.pause();
+        musicIcon.textContent = '🎵';
+        musicBtn.classList.remove('active');
+    }
+}
+
+function toggleSound() {
+    state.soundOn = !state.soundOn;
+    soundIcon.textContent = state.soundOn ? '🔊' : '🔇';
+    soundBtn.classList.toggle('active', state.soundOn);
+    if (state.soundOn) playSound('click');
+}
+
+// ============ رویدادها ============
+envelopeStage.addEventListener('click', openEnvelope);
+envelopeFlap.addEventListener('click', (e) => { e.stopPropagation(); openEnvelope(); });
+closeBtn.addEventListener('click', (e) => { e.stopPropagation(); closeEnvelope(); });
+musicBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleMusic(); });
+soundBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleSound(); });
+
+// جلوگیری از زوم دو انگشتی
+document.addEventListener('touchstart', (e) => {
+    if (e.touches.length > 1) e.preventDefault();
+}, { passive: false });
+
+let lastTouchEnd = 0;
+document.addEventListener('touchend', (e) => {
+    const now = Date.now();
+    if (now - lastTouchEnd <= 300) e.preventDefault();
+    lastTouchEnd = now;
+}, false);
+
+// ریسایز
+window.addEventListener('resize', () => {
+    particlesCanvas.width = window.innerWidth;
+    particlesCanvas.height = window.innerHeight;
+});
+
+// ============ شروع ============
+createCandles();
+createStars();
+initParticles();
+drawParticles();
+							</script>
+                        </body>
+                        </html>
+                    
